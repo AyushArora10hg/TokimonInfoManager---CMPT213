@@ -31,7 +31,7 @@ The application allows users to **manage Tokimon data** through a user-friendly 
 ## Installation
 1. Clone the repository:  
    ```bash
-   
+   https://github.com/AyushArora10hg/TokimonInfoManager---CMPT213.git
 2. Open the project in your IDE (IntelliJ, Eclipse, etc.).
 3. Build the server with Maven:
    ```bash
