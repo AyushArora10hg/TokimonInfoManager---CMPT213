@@ -144,7 +144,11 @@ public class ClientRequestManager{
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json");
                 OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-                wr.write(STR."{\"name\":\"\{input[0]}\",\"type\":\"\{input[1]}\",\"rarity\":\"\{Integer.parseInt(input[2])}\",\"healthPoints\":\"\{Double.parseDouble(input[3])}\",\"imgLink\":\"\{input[4]}\"}");
+                String json = String.format(
+                        "{\"name\":\"%s\",\"type\":\"%s\",\"rarity\":%d,\"healthPoints\":%f,\"imgLink\":\"%s\"}",
+                        input[0], input[1], Integer.parseInt(input[2]), Double.parseDouble(input[3]), input[4]
+                );
+                wr.write(json);
                 wr.flush();
                 wr.close();
                 connection.connect();
@@ -170,7 +174,11 @@ public class ClientRequestManager{
                 connection.setDoOutput(true);
                 connection.setRequestProperty("Content-Type", "application/json");
                 OutputStreamWriter wr = new OutputStreamWriter(connection.getOutputStream());
-                wr.write(STR."{\"name\":\"\{input[1]}\",\"type\":\"\{input[2]}\",\"rarity\":\"\{Integer.parseInt(input[3])}\",\"healthPoints\":\"\{Double.parseDouble(input[4])}\",\"imgLink\":\"\{input[5]}\"}");
+                String json = String.format(
+                        "{\"name\":\"%s\",\"type\":\"%s\",\"rarity\":%d,\"healthPoints\":%f,\"imgLink\":\"%s\"}",
+                        input[1], input[2], Integer.parseInt(input[3]), Double.parseDouble(input[4]), input[5]
+                );
+                wr.write(json);
                 wr.flush();
                 wr.close();
                 System.out.println("ResponseCode: " + connection.getResponseCode());
@@ -212,40 +220,26 @@ public class ClientRequestManager{
         };
     }
 
-    private static String formatInfo (JSONObject jsonObject1) {
-
+    private static String formatInfo(JSONObject jsonObject1) {
         Object idObj = jsonObject1.get("id");
-        int id;
-        if (idObj instanceof Number) {
-            id = ((Number) idObj).intValue();
-        }
-        else {
-            id = 0;
-        }
+        int id = (idObj instanceof Number) ? ((Number) idObj).intValue() : 0;
 
         String name = (String) jsonObject1.get("name");
         String type = (String) jsonObject1.get("type");
+
         Object rarityObj = jsonObject1.get("rarity");
-        long rarity;
-        if (rarityObj instanceof Number) {
-            rarity = ((Number) rarityObj).longValue();
-        }
-        else {
-            rarity = 0;
-        }
+        long rarity = (rarityObj instanceof Number) ? ((Number) rarityObj).longValue() : 0;
 
         Object hpObj = jsonObject1.get("healthPoints");
-        double hp;
-        if (hpObj instanceof Number) {
-            hp = ((Number) hpObj).doubleValue();
-        }
-        else {
-            hp = 0;
-        }
+        double hp = (hpObj instanceof Number) ? ((Number) hpObj).doubleValue() : 0;
 
         String imgLink = (String) jsonObject1.get("imgLink");
 
-        return (STR."Id: \{id}, Name: \{name}, Type: \{type}, Rarity: \{rarity}, Health Points: \{hp}, Image Link: \{imgLink}");
+        return String.format(
+                "Id: %d, Name: %s, Type: %s, Rarity: %d, Health Points: %.2f, Image Link: %s",
+                id, name, type, rarity, hp, imgLink
+        );
     }
+
 
 }
